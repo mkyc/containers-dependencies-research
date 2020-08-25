@@ -5,12 +5,12 @@ RUN apk add --update --no-cache make=4.3-r0 curl &&\
     chmod +x /usr/bin/yq
 
 ENV C_WORKDIR "/workdir"
-ENV C_TEMPLATES "/templates"
+ENV C_TEMPLATES "/mocks"
 ENV C_SHARED "/shared"
 ENV C_CONFIG "bmk-config.yml"
 
 WORKDIR /workdir
 ENTRYPOINT ["make"]
 
-COPY templates /templates
+COPY mocks /mocks
 COPY workdir /workdir
