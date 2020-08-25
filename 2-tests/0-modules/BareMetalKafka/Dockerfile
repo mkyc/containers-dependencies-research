@@ -13,4 +13,4 @@ WORKDIR /workdir
 ENTRYPOINT ["make"]
 
 COPY templates /templates
-COPY files /workdir
+COPY workdir /workdir
