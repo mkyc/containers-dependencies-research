@@ -7,6 +7,7 @@ RUN apk add --update --no-cache make=4.3-r0 curl &&\
 ENV C_WORKDIR "/workdir"
 ENV C_TEMPLATES "/templates"
 ENV C_SHARED "/shared"
+ENV C_CONFIG "bmk-config.yml"
 
 WORKDIR /workdir
 ENTRYPOINT ["make"]
