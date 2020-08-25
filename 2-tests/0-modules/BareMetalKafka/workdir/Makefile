@@ -44,6 +44,12 @@ apply: guard-C_TEMPLATES guard-C_SHARED validate
 	@yq m -x -i ${C_SHARED}/state.yml ${C_SHARED}/${C_CONFIG}
 	@yq w -i ${C_SHARED}/state.yml bmk.status applied
 	@yq w -i ${C_SHARED}/state.yml bmk.clusterNodes.*.state created
+	$(eval createdPaths = $(shell yq r ${C_SHARED}/state.yml --printMode p bmk.clusterNodes.\(state==created\)))
+	@export CP="$(createdPaths)" ; \
+	for p in $$CP ; do \
+        echo $$p ; \
+        yq w -i ${C_SHARED}/state.yml azi.nodes.\(privateIP==`yq r ${C_SHARED}/state.yml $$p.privateIP`\).usedBy bmk ; \
+    done
 
 guard-%:
 	@ if [ "${${*}}" = "" ]; then \
