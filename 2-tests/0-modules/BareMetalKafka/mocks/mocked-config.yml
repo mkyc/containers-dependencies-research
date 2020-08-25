@@ -1,8 +1,2 @@
 bmk:
-  clusterNodes:
-    - publicIP: 213.1.1.1
-      privateIP: 10.0.0.1
-    - publicIP: 213.1.1.2
-      privateIP: 10.1.1.2
-    - publicIP: 213.1.1.3
-      privateIP: 10.1.1.3
+  size: 3

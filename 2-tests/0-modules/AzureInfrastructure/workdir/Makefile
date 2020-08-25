@@ -26,10 +26,10 @@ apply: guard-C_TEMPLATES guard-C_SHARED validate
 	@yq m -x -i ${C_SHARED}/state.yml ${C_SHARED}/${C_CONFIG}
 	@yq w -i ${C_SHARED}/state.yml azi.status applied
 	$(eval last = $(shell yq r ${C_SHARED}/${C_CONFIG} azi.size))
-	@number=1 ; while [[ $$number -le $(last) ]] ; do \
-		yq w -i ${C_SHARED}/state.yml azi.nodes.node$$number.privateIP "10.0.0.$$number" ; \
-		yq w -i ${C_SHARED}/state.yml azi.nodes.node$$number.publicIP "213.1.1.$$number" ; \
-		yq w -i ${C_SHARED}/state.yml azi.nodes.node$$number.usedBy unused ; \
+	@number=0 ; while [[ $$number -lt $(last) ]] ; do \
+		yq w -i ${C_SHARED}/state.yml azi.nodes[$$number].privateIP "10.0.0.$$number" ; \
+		yq w -i ${C_SHARED}/state.yml azi.nodes[$$number].publicIP "213.1.1.$$number" ; \
+		yq w -i ${C_SHARED}/state.yml azi.nodes[$$number].usedBy unused ; \
 		number=`expr $$number + 1`; \
 	done
 
