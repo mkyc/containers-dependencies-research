@@ -28,11 +28,8 @@ init-and-apply-kafka: guard-BMK_VERSION
 		-t mnemos/epi-c-bmk:$(BMK_VERSION) \
 		apply
 
-get-state: guard-BMK_VERSION
-	@docker run --rm \
-		-v $(ROOT_DIR)/shared:/shared \
-		-t mnemos/epi-c-bmk:$(BMK_VERSION) \
-		get-state
+state: guard-BMK_VERSION
+	@if test -f $(ROOT_DIR)/shared/state.yml; then cat $(ROOT_DIR)/shared/state.yml ; else echo UNINITIALIZED && exit 1; fi
 
 guard-%:
 	@ if [ "${${*}}" = "" ]; then \

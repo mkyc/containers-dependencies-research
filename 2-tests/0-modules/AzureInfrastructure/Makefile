@@ -13,7 +13,7 @@ guard-%:
 		exit 1; \
 	fi
 
-get-metadata: guard-VERSION guard-IMAGE guard-USER
+metadata: guard-VERSION guard-IMAGE guard-USER
 	@docker run --rm \
 		-t $(USER)/$(IMAGE):$(VERSION) \
-		get-metadata
+		metadata
