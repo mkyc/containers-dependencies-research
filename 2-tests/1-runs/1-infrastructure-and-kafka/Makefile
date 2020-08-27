@@ -3,7 +3,9 @@ ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 BMK_VERSION := 1
 AZI_VERSION := 1
 
-.PHONY: get-metadata init validate get-state apply clean
+.PHONY: all clean init-and-apply-azure-infrastructure init-and-apply-kafka just-init-kafka and-then-apply-kafka state
+
+all: clean init-and-apply-azure-infrastructure init-and-apply-kafka state
 
 clean:
 	rm $(ROOT_DIR)/shared/*
@@ -23,6 +25,18 @@ init-and-apply-kafka: guard-BMK_VERSION
 		-v $(ROOT_DIR)/shared:/shared \
 		-t mnemos/epi-c-bmk:$(BMK_VERSION) \
 		init
+	@docker run --rm \
+		-v $(ROOT_DIR)/shared:/shared \
+		-t mnemos/epi-c-bmk:$(BMK_VERSION) \
+		apply
+
+just-init-kafka: guard-BMK_VERSION
+	@docker run --rm \
+		-v $(ROOT_DIR)/shared:/shared \
+		-t mnemos/epi-c-bmk:$(BMK_VERSION) \
+		init
+
+and-then-apply-kafka: guard-BMK_VERSION
 	@docker run --rm \
 		-v $(ROOT_DIR)/shared:/shared \
 		-t mnemos/epi-c-bmk:$(BMK_VERSION) \
