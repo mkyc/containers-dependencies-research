@@ -171,8 +171,51 @@ General reason to this method is that after we "smart initialized" config, we mi
 
 ## Apply
 
-`apply` is main "logic" module. 
+`apply` is main "logic" method. Its purpose is to do 2 things: 
+ * apply module logic (i.e.: install software, modify config, manage service, install infrastructure, etc.), 
+ * update state file. 
+ 
+In fact, you might debate which of those is more important, and I could argue that updating state file is more important. 
+
+To perform its operations it uses config file previously validated in `plan` step. 
 
 ## Audit
 
-# Check that required methods are implemented
+`audit` method use case is to check how existing components is "understandable" by component provider logic. A standard situation would be upgrade procedure. We can imagine following history: 
+ * I installed `BareMetalKafka` module in version 0.0.1
+ * Then I manually customized configuration on cluster machines
+ * Now I want to update `BareMetalKafka` to veersion 0.0.2 because it provides something I need 
+ 
+In such a scenario, checking if upgrade operation will succeed is critical one, and that is duty of `audit` operation. It should check on cluster machines if "known" configuration is still "known" (whatever it means for now) and that upgrade operation will not destroy anything. 
+
+Another use case for audit method is to reflect manually introduced changes into configuration (and / or state). If I manually upgraded minor version of some component (i.e.: 1.2.3 to 1.2.4) it's highly possible that it might be easily reflected in state file without any trouble to other configuration.    
+
+# Optional methods
+
+There are also already known methods which would be required to have most (or maybe all) modules, but are not core to modules communication. Those are purely "internal" module business. Following examples are probably just subset of optional methods.  
+
+## Backup / Restore
+
+Provide backup and restore functionalities to protect data and configuration of installed module. 
+
+## Update
+
+Perform steps to update module components to newer versions with data migration, software re-configuration, infrastructure remodeling and any other required steps. 
+
+## Scale
+
+Operations related to scale up and scale down module components. 
+
+# Check required methods implementation
+
+All accessible methods would be listed in module metadata as proposed [here](https://github.com/mkyc/epiphany-wrapper-poc-repo/blob/master/v1.yaml). That means that it's possible to: 
+ * validate if there are all required methods implemented, 
+ * validate if required methods return in expected way, 
+ * check if state file is updated with values expected by other known modules.
+  
+All that means that we would be able to automate modules release process, test it separately and validate its compliance with modules requirements.  
+
+# Future work
+
+We should consider during development phase if and how to present in manifest what are external fields that module requires for apply operation. That way we might be able to catch inconsistencies between what one module provide and what another module require form it. 
+ 
