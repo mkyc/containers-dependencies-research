@@ -218,4 +218,6 @@ All that means that we would be able to automate modules release process, test i
 # Future work
 
 We should consider during development phase if and how to present in manifest what are external fields that module requires for apply operation. That way we might be able to catch inconsistencies between what one module provide and what another module require form it. 
+
+Another topic to consider is some standarization over modules labeling. 
  
